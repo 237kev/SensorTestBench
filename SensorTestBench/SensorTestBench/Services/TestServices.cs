@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace SensorTestBench.Services
 {
     public class TestServices
@@ -13,6 +14,18 @@ namespace SensorTestBench.Services
         public double ComputeResistance(double tem)
         {
             return ResRefInOhm * (1 + CoefficientA * tem + CoefficientB * tem * tem);
+        }
+
+
+        public bool MeasuredResistanceIsOk(double expecetedResistance, double measuredResistance, double tolerance )
+        {
+            double deltaRes = Math.Abs(expecetedResistance - measuredResistance);
+            if (deltaRes <= tolerance)
+            {
+                return true;
+            }
+            return false;
+
         }
 
 
