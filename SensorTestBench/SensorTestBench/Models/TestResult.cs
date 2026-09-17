@@ -16,9 +16,15 @@ namespace SensorTestBench.Models
         private double deltaR;
         private bool testBestanden;
         private DateTime getestetAm;
+        private double tolerance;
 
         // Property variables in PascalCase
 
+        public double Tolerance
+        {
+            get { return tolerance; }
+            set { tolerance = value; }     
+        }
         public int TestID
         {
             get
