@@ -7,6 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <!-- je subdivise le grid principal en 3.-->
+ 
+        <Grid.RowDefinitions>       
+            <RowDefinition Height="Auto"/>          <!-- Row 0 avec une hauteur automatique -->
+            <RowDefinition Height="*"/>             <!-- Row 1 dont la hauteur occupera la hauteur restant-->
+            <RowDefinition Height="Auto"/>          <!--- Row 2 a une la hauteur automatiques-->
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1">                         <!--ici je veux modifier le row 1 -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>       <!--je compartiment le row 1 en deux parts egales -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
 
     </Grid>
 </Window>
