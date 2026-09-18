@@ -1,4 +1,6 @@
 ﻿using SensorTestBench.Services;
+using SensorTestBench.ViewModels;
+using SensorTestBench.Models;
 
 namespace SensorTestBench.Tests
 {
@@ -59,6 +61,31 @@ namespace SensorTestBench.Tests
             bool result = tS.MeasuredResistanceIsOk(expecetedResistance, measuredResistance, tolerance);
 
             Assert.Equal(expectedResult,result);
+        }
+        [Fact]
+        public void TestMainViewModel()
+        {
+            // Arrange
+            MainViewModel mainViewModel = new MainViewModel();
+            mainViewModel.SensorTyp = "PT100";
+            mainViewModel.TemperaturRef = 100.0;
+            mainViewModel.MeasuredResistanceValue = 138.4752; // Ist
+            double expectedResistance = 138.5055;           //soll
+            double expectedDelta = Math.Abs(expectedResistance - mainViewModel.MeasuredResistanceValue);
+            mainViewModel.Tolerance = 0.1;
+
+            // Act
+            mainViewModel.Run();
+
+            // Assert
+            Assert.NotNull(mainViewModel.LastTestResult);
+            Assert.Equal(mainViewModel.SensorTyp, mainViewModel.LastTestResult.SensorTyp);
+            Assert.Equal(mainViewModel.TemperaturRef, mainViewModel.LastTestResult.TemRef,4);
+            Assert.Equal(mainViewModel.MeasuredResistanceValue, mainViewModel.LastTestResult.ResIst,4);
+            Assert.Equal(expectedResistance, mainViewModel.LastTestResult.ResSoll,4);
+            Assert.Equal(expectedDelta, mainViewModel.LastTestResult.DeltaR,4);
+            Assert.True(mainViewModel.LastTestResult.TestBestanden);
+            Assert.Equal(mainViewModel.Tolerance, mainViewModel.LastTestResult.Tolerance);
         }
 
 

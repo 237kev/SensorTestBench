@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SensorTestBench.Models
 {
-    internal class TestResult
+    public class TestResult
     {
 
         // Field variables in camelCase

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SensorTestBench.ViewModels
 {
-    internal class MainViewModel
+    public class MainViewModel
     {
         // variable de champs
         private string sensorTyp = "";
@@ -57,11 +57,13 @@ namespace SensorTestBench.ViewModels
             testResult.ResIst = MeasuredResistanceValue;
             testResult.SensorTyp = SensorTyp;
             testResult.TemRef = TemperaturRef;
-            testResult.DeltaR = Math.Abs (testResult.ResSoll - testResult.ResIst);
+
             testResult.GetestetAm = DateTime.Now;
             testResult.Tolerance = Tolerance;
 
+            
             testResult.ResSoll = testService.ComputeResistance(TemperaturRef); // calcule de la valeur theorique de la resistance dans le TestService et stockage dans une variable l'objet result
+            testResult.DeltaR = Math.Abs(testResult.ResSoll - testResult.ResIst);
             testResult.TestBestanden = testService.MeasuredResistanceIsOk(testResult.ResSoll, MeasuredResistanceValue, Tolerance); // Stockage du resultat du test dans une variable de l'objet result
 
             LastTestResult = testResult; // le MainViewModel stocke l'objet de testResult (entierement)
