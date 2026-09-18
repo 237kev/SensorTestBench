@@ -88,6 +88,57 @@ namespace SensorTestBench.Tests
             Assert.Equal(mainViewModel.Tolerance, mainViewModel.LastTestResult.Tolerance);
         }
 
+        [Fact]
+        public void TestMainViewModelPropertiesChanged()
+        {
+            // Arrange
+            MainViewModel mainViewModel = new MainViewModel();
+            bool sensorTypChanged = false;
+            bool temperaturRefChanged = false;
+            bool measuredResistanceValueChanged = false;
+            bool toleranceChanged = false;
+            mainViewModel.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(MainViewModel.SensorTyp))
+                    sensorTypChanged = true;
+                if (e.PropertyName == nameof(MainViewModel.TemperaturRef))
+                    temperaturRefChanged = true;
+                if (e.PropertyName == nameof(MainViewModel.MeasuredResistanceValue))
+                    measuredResistanceValueChanged = true;
+                if (e.PropertyName == nameof(MainViewModel.Tolerance))
+                    toleranceChanged = true;
+            };
+            // Act
+            mainViewModel.SensorTyp = "PT100";
+            mainViewModel.TemperaturRef = 100.0;
+            mainViewModel.MeasuredResistanceValue = 138.4752;
+            mainViewModel.Tolerance = 0.1;
+            // Assert
+            Assert.True(sensorTypChanged);
+            Assert.True(temperaturRefChanged);
+            Assert.True(measuredResistanceValueChanged);
+            Assert.True(toleranceChanged);
+        }
+
+        [Fact]
+        public void TestMainViewModelPropertychangedNotTriggeredWhenValueIsSame()
+        {
+            // Arrange
+            MainViewModel mainViewModel = new MainViewModel();
+            bool sensorTypChanged = false;
+            mainViewModel.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(MainViewModel.SensorTyp))
+                    sensorTypChanged = true;
+            };
+            // Act
+            mainViewModel.SensorTyp = "PT100"; // First change, should trigger PropertyChanged
+            sensorTypChanged = false; // Reset for the next test
+            mainViewModel.SensorTyp = "PT100"; // Same value, should not trigger PropertyChanged
+            // Assert
+            Assert.False(sensorTypChanged);
+        }
+
 
     }
 }
