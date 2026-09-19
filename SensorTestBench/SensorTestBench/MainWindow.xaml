@@ -5,21 +5,323 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SensorTestBench"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Sensor Test Bench" Height="450" Width="800"
+        >
     <Grid>
         <!-- je subdivise le grid principal en 3.-->
- 
-        <Grid.RowDefinitions>       
-            <RowDefinition Height="Auto"/>          <!-- Row 0 avec une hauteur automatique -->
-            <RowDefinition Height="*"/>             <!-- Row 1 dont la hauteur occupera la hauteur restant-->
-            <RowDefinition Height="Auto"/>          <!--- Row 2 a une la hauteur automatiques-->
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <!-- Row 0 avec une hauteur automatique -->
+            <RowDefinition Height="*"/>
+            <!-- Row 1 dont la hauteur occupera la hauteur restant-->
+            <RowDefinition Height="35"/>
+            <!-- Row 2 a une la hauteur automatiques-->
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1">                         <!--ici je veux modifier le row 1 -->
+        <Grid Grid.Row="0">
+            <!--ici je veux modifier le row 0 -->
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>       <!--je compartiment le row 1 en deux parts egales -->
+                <!--je compartiment le row 0 en deux part non egales 90 pixel (le logo) et le reste (le titre) -->
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" 
+                   Source="Assets/images/GFS_SensorTestBench_preview.png"
+                   Width="Auto" Height="55" Stretch="Uniform"
+                   VerticalAlignment="Center"
+                   Margin="15,5,10,5"/>
+
+            <TextBlock Grid.Column="1" 
+                       Text="Sensor Test Bench"
+                       FontSize="30"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Grid.Column="2" 
+                       Text="Test - Validate - Ensure Quality"                    
+                       FontSize="16"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+
+        </Grid>
+
+
+        <!--ROW 1 CONFIGURATION & RESULTATS-->
+        <!--DANS ROW 1 IL Y A 2 COLONNES -->
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <!--je compartiment le row 1 en deux part egales -->
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <!-- LA COLONNE DE GAUCHE POUR LA CONFIGURATION-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="1*"/>
+
+                </Grid.RowDefinitions>
+                <TextBlock Text="Test Configuration" 
+                           FontSize="25" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Left" 
+                           Margin="5,5,0,5" Width="217"/>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <TextBlock  Text="Sensor Type" 
+                                        FontSize="15"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="2,2,2,2"
+                                        Width="180"/>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <TextBlock  Text="Temperatur Ref (°C)" 
+                                        FontSize="15"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="2,2,2,2"
+                                        Width="180"/>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <TextBlock Text="Measured Resistance (Ω)" 
+                                        FontSize="15"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="2,2,2,2"
+                                        Width="180"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <TextBlock Text="Tolerance (Ω)" 
+                                        FontSize="15"
+                                        FontStyle="Normal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="2,2,2,2"
+                                        Width="180"/>
+                        </Grid>
+
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <ComboBox x:Name="SensorTypeComboBox"     
+                              FontSize="15"
+                              HorizontalAlignment="Left" 
+                              Margin="2,2,2,2"
+                              Width="180"
+                              SelectedValuePath="Content"
+                              SelectedValue="{Binding SensorTyp}">
+                                <ComboBoxItem Content="PT100"
+                                          FontSize="15"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"/>
+                            </ComboBox>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <TextBox x:Name="TemperaturRefTextBox" 
+                              FontSize="15"
+                              HorizontalAlignment="Left" 
+                              Margin="2,2,2,2"
+                              Width="180"
+                              />
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <TextBox x:Name="MeasuredResistanceTextBox" 
+                              FontSize="15"
+                              HorizontalAlignment="Left" 
+                              Margin="2,2,2,2" Width="180" />
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <TextBox x:Name="ToleranceTextBox" 
+                              FontSize="15"
+                              HorizontalAlignment="Left" 
+                              Margin="2,2,2,2"
+                              Width="180"/>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+                <Grid Grid.Row="2" >
+                    <Button Content ="Run Test"
+                            FontSize="22"
+                            HorizontalAlignment="Center" 
+                            Margin="2,2,2,2"
+                            Width="350"/>
+                    
+
+
+                </Grid>
+
+
+            </Grid>
+            <!-- LA COLONNE DE DROITE POUR LES RESULTATS-->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Test Result" 
+                           FontSize="25" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Left" 
+                           Margin="5"/>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+
+
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <TextBlock Text="Expected Resistance Value (Ω)" 
+                                       FontStretch="Condensed"
+                                       
+                               FontSize="15"
+                               HorizontalAlignment="Left" 
+                               Margin="2,2,2,2" Width="220" />
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <TextBlock Text="Measured Resistance (Ω)" 
+                               FontSize="15"
+                               HorizontalAlignment="Left" 
+                               Margin="2,2,2,2" Width="220" />
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="37*"/>
+                                <ColumnDefinition Width="220*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Delta Resistance (Ω)" 
+                               FontSize="15"
+                               HorizontalAlignment="Left" 
+                               Margin="2,2,0,2" Width="220" Grid.ColumnSpan="2" />
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="47*"/>
+                                <ColumnDefinition Width="220*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Result" 
+                               FontSize="15"
+                               HorizontalAlignment="Left" 
+                               Margin="2,2,0,2" Width="162" Grid.ColumnSpan="2" />
+
+                        </Grid>
+                        <Grid Grid.Row="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="47*"/>
+                                <ColumnDefinition Width="220*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Tested At" 
+                               FontSize="15"
+                               HorizontalAlignment="Left" 
+                               Margin="2,2,0,2" Width="220" Grid.ColumnSpan="2" />
+
+                        </Grid>
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+
+
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <TextBox 
+                                x:Name="ExpectedResistanceTextBox"
+                                FontSize="15"
+                                HorizontalAlignment="Left" 
+                                Margin="4"
+                                Width="150"
+                                IsReadOnly="True"/> 
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <TextBox 
+                                x:Name="MeasuredResistanceResultTextBox" 
+                                FontSize="15"
+                                HorizontalAlignment="Left" 
+                                Margin="4"
+                                Width="150"
+                                IsReadOnly="True"/>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <TextBox 
+                                x:Name="DeltaResistanceTextBox" 
+                                FontSize="15"
+                                HorizontalAlignment="Left" 
+                                Margin="4" Width="150"
+                                IsReadOnly="True"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <TextBox 
+                                x:Name="ResultTextBox" 
+                                FontSize="15"
+                                HorizontalAlignment="Left" 
+                                Margin="4"
+                                Width="150"
+                                IsReadOnly="True"/>
+                        </Grid>
+                        <Grid Grid.Row="4">
+                            <TextBox 
+                                x:Name="TestedAtTextBox" 
+                                FontSize="15"
+                                HorizontalAlignment="Left" 
+                                Margin="4"
+                                Width="150"
+                                IsReadOnly="True"/>
+                        </Grid>
+
+                    </Grid>
+
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Button Content="Save result"
+                            FontSize="22"
+                            HorizontalAlignment="Center" 
+                            Margin="2,2,2,2"
+                            Width="350"/>
+                </Grid>
+            </Grid>
         </Grid>
 
     </Grid>

@@ -23,5 +23,7 @@ namespace SensorTestBench
             MainViewModel mainViewModel = new MainViewModel();
             this.DataContext = mainViewModel;
         }
+
+
     }
 }
