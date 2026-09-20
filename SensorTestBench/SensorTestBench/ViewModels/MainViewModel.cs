@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using System.ComponentModel; // ici je veux utiliser l'interface INotifyPropertyChanged pour notifier la View de tout changement de valeur dans le Viewmodel
+using System.ComponentModel;
+using System.Windows.Input;
+using System.Windows.Documents; // ici je veux utiliser l'interface INotifyPropertyChanged pour notifier la View de tout changement de valeur dans le Viewmodel
 
 namespace SensorTestBench.ViewModels
 {
@@ -16,9 +18,15 @@ namespace SensorTestBench.ViewModels
         private double measuredResistanceValue;
         private TestResult? lastTestResult;
         private double tolerance;
-
+        private double resSoll;
 
         // les proprietés
+        public ICommand RunCommand { get; }
+        public ICommand LoadConfigurationCommand { get; }
+        public ICommand SaveResultCommand { get; }
+
+
+
         public string SensorTyp
         {
             get { return sensorTyp; }
@@ -31,6 +39,22 @@ namespace SensorTestBench.ViewModels
                     
                 }
 
+        }
+        public double ResSoll
+        {
+            get
+            {
+                return resSoll;
+            }
+            set
+            {
+                if(resSoll != value)
+                {
+                     resSoll = value;
+                    OnPropertyChanged(nameof(ResSoll));
+                }
+
+            }
         }
         public double TemperaturRef
         {
@@ -69,23 +93,51 @@ namespace SensorTestBench.ViewModels
                     }
                 }
         }
-                public TestResult? LastTestResult
+        public TestResult? LastTestResult
         {
             get { return lastTestResult; }
             set { 
                     if(lastTestResult != value)
                     {
                         lastTestResult = value;
-                        OnPropertyChanged(nameof(LastTestResult)); // Notifie la View que la propriété LastTestResult a changé  
+                        OnPropertyChanged(nameof(LastTestResult)); // Notifie la View que la propriété LastTestResult a changé
+                        OnPropertyChanged(nameof(ResultText));
                     }
                 }
+        }
+        public string ResultText
+        {
+            get
+            {
+                if (LastTestResult == null)
+                {
+                    return "";
+                }
+
+                if (LastTestResult.TestBestanden)
+                {
+                    return "OK";
+                }
+                else
+                {
+                    return "NOK";
+                }
+            }
+        }
+
+        // Konstruktor: Initialisierungen, die Instanzmethoden benötigen, hier ausführen
+        public MainViewModel()
+        {
+            // CanExecute immer true (B): übergibt eine Func<bool>
+            RunCommand = new RelayCommand(Run, () => true);
+            LoadConfigurationCommand = new RelayCommand(LoadConfiguration, () => true);
+            SaveResultCommand = new RelayCommand(SaveResult, () => true);
         }
         public void Run()
         {
 
             TestServices testService = new TestServices(); // je veux utiliser les methodes de la classe TestServices pour les tests de calcul
             TestResult testResult = new TestResult(); // je veux stocker les valeurs issues des tests de calcul dans notre objet metier (object de la classe testResult)
-
             // toutes les valeurs de variable du MainViewModel a stocker dans la base de données sont passées aux variable de testResult
 
 
@@ -93,15 +145,33 @@ namespace SensorTestBench.ViewModels
             testResult.SensorTyp = SensorTyp;
             testResult.TemRef = TemperaturRef;
 
-            testResult.GetestetAm = DateTime.Now;
+            testResult.GetestetAm = DateTime.Now; 
             testResult.Tolerance = Tolerance;
 
 
-            testResult.ResSoll = testService.ComputeResistance(TemperaturRef); // calcule de la valeur theorique de la resistance dans le TestService et stockage dans une variable l'objet result
+            testResult.ResSoll = ResSoll; 
             testResult.DeltaR = Math.Abs(testResult.ResSoll - testResult.ResIst);
             testResult.TestBestanden = testService.MeasuredResistanceIsOk(testResult.ResSoll, MeasuredResistanceValue, Tolerance); // Stockage du resultat du test dans une variable de l'objet result
-
             LastTestResult = testResult; // le MainViewModel stocke l'objet de testResult (entierement)
+
+        }
+        public void LoadConfiguration()
+        {
+            if (SensorTyp == "PT100")
+            {
+                TemperaturRef = 100;
+                Tolerance = 0.1;
+                ResSoll = 138.5;
+            }
+            if (SensorTyp == "NTC")
+            {
+                TemperaturRef = 0;
+                Tolerance = 0.15;
+                ResSoll = 60;
+            }
+        }
+        public void SaveResult()
+        {
 
         }
 
@@ -113,6 +183,38 @@ namespace SensorTestBench.ViewModels
         void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+
+        // Einfache RelayCommand-Implementierung
+        public class RelayCommand : ICommand
+        {
+            private readonly Action _execute;
+            private readonly Func<bool>? _canExecute;
+
+            public RelayCommand(Action execute, Func<bool>? canExecute)
+            {
+                this._execute = execute;
+                this._canExecute = canExecute;
+                    
+            }
+
+            public event EventHandler? CanExecuteChanged;
+
+            public bool CanExecute(object? parameter)
+            {
+                if(_canExecute == null)
+                {
+                    return true;
+                }
+                else return _canExecute();
+            }
+
+            public void Execute(object? parameter)
+            {
+                _execute();
+            }
         }
     }
 }

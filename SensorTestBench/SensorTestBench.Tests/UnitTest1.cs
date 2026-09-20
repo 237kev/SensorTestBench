@@ -15,7 +15,7 @@ namespace SensorTestBench.Tests
             double tem0 = 0.0;
             double expectedResult = 100.0;
             //act
-            double computedResult = tS.ComputeResistance(tem0);
+            double? computedResult = tS.ComputeResistance(tem0);
             //assert
             Assert.Equal(expectedResult, computedResult);
 
@@ -28,9 +28,9 @@ namespace SensorTestBench.Tests
             double entryTemperature = 100.0;
             double expectedResult = 138.5055;
             //act
-            double computedResult = tS.ComputeResistance(entryTemperature);
-            //assert
-            Assert.Equal(expectedResult, computedResult, 4);
+            double? computedResult = tS.ComputeResistance(entryTemperature);
+            //assert: computedResult ist nullable, Precision-Overload erwartet non-nullable double
+            Assert.Equal(expectedResult, computedResult.Value, 4);
 
         }
         [Fact]

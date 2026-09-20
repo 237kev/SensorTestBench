@@ -11,12 +11,13 @@ namespace SensorTestBench.Models
         private int testID;
         private string sensorTyp ="";
         private double temRef;
-        private double resSoll;
+
         private double resIst;
         private double deltaR;
         private bool testBestanden;
         private DateTime getestetAm;
         private double tolerance;
+        private double resSoll;
 
         // Property variables in PascalCase
 
@@ -36,7 +37,19 @@ namespace SensorTestBench.Models
                 testID = value;
             }
         }
+        public double ResSoll
+        {
+            get
+            {
+                return resSoll;
+            }
+            set
+            {
 
+                resSoll = value;
+            }
+                   
+        }
         public string SensorTyp
         {
             get
@@ -61,17 +74,7 @@ namespace SensorTestBench.Models
                 temRef = value;
             }
         }
-        public double ResSoll
-        {
-            get
-            {
-                return resSoll;
-            }
-            set
-            {
-                resSoll = value;
-            }
-        }
+
         public double ResIst
         {
             get

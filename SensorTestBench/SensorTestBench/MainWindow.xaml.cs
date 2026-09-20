@@ -17,13 +17,15 @@ namespace SensorTestBench
     /// </summary>
     public partial class MainWindow : Window
     {
+   
+        protected MainViewModel mainViewModel = new MainViewModel();
+
         public MainWindow()
         {
             InitializeComponent();
-            MainViewModel mainViewModel = new MainViewModel();
+            
             this.DataContext = mainViewModel;
         }
-
 
     }
 }
