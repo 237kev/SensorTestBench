@@ -11,6 +11,7 @@ namespace SensorTestBench.Models
         private double temperaturRef;
         private double tolerance;
         private double expectedResistance;
+        private int sensorConfigID;
 
         // proprieté
         public string SensorTyp
@@ -35,6 +36,11 @@ namespace SensorTestBench.Models
         {
             set { expectedResistance = value; }
             get { return expectedResistance; }
+        }
+        public int SensorConfigID
+        {
+            get { return sensorConfigID; }
+            set { sensorConfigID = value; }
         }
     }
 }
